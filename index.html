@@ -3,16 +3,13 @@
 <html>
 <head>
     <title>Text Editor</title>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js" 
-          integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V"
-          crossorigin="anonymous"></script> -->
     <script src="htmx.js"></script>
     <!-- add style tag -->
 </head>
 <body>
-    <div id="dir" style="" hx-get="/dir" hx-trigger="load" hx-swap="innnerHTML">foo</div>
-    <div id="file" style="" hx-post="/">bar</div>
-    <div id="term" style="">baz</div>
+    <div id="dir" hx-get="/dir" hx-trigger="load" hx-swap="innnerHTML">foo</div>
+    <div id="file" hx-post="/">bar</div>
+    <div id="term">baz</div>
     <script src="script.js"></script>
 </body>
 </html>
