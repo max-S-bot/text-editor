@@ -4,12 +4,21 @@
 <head>
     <title>Text Editor</title>
     <script src="htmx.js"></script>
-    <!-- add style tag -->
+    <style>
+        #dir {
+
+        }
+        #file {
+
+        }
+        #term {
+
+        }
+    </style>
 </head>
 <body>
-    <div id="dir" hx-get="/dir" hx-trigger="load" hx-swap="innnerHTML">foo</div>
-    <div id="file" hx-post="/">bar</div>
+    <div id="dir" hx-get="/dir" hx-trigger="load" hx-swap="innnerHTML"></div>
+    <textarea id="file" name="file" hx-post="/file" trigger="change" hx-swap="none"></textarea>
     <div id="term">baz</div>
-    <script src="script.js"></script>
 </body>
 </html>

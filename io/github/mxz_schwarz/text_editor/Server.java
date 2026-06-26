@@ -7,6 +7,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.io.IOException;
+import java.util.Arrays;
 
 class Server {
 
@@ -14,6 +15,7 @@ class Server {
 
     private static Path dir = null; 
     private static final Path startDir = Path.of("/home/mxz-schwarz");
+    private static Path file = null;
 
     static void main(String... args) throws IOException {
         var server = HttpServer.create(new InetSocketAddress(8080), 0);
@@ -41,8 +43,12 @@ class Server {
     }
 
     private static void handleFile(HttpExchange e) throws IOException {
-        var file = Path.of("/").resolve(Path.of("/file").relativize(Path.of(e.getRequestURI().toString())));
-        respond(e, Util.formatFile(file), "text/html");
+        var body = e.getRequestBody().readAllBytes();
+        if (e.getRequestMethod().equals("GET"))
+            respond(e, Util.formatFile(file = Path.of("/").resolve(Path.of("/file").relativize(Path.of(e.getRequestURI().toString())))), "text/plain");
+        else if (file != null)
+            Files.write(file, Arrays.copyOfRange(body, 5, body.length));
+        e.sendResponseHeaders(204, -1);
     }
 
     private static void respond(HttpExchange e, byte[] response, String contentType) throws IOException {

@@ -21,7 +21,7 @@ class Util {
     }
 
     static byte[] formatFile(Path file) throws IOException {
-        return ("<textarea>" + Files.readString(file) + "</textarea>").getBytes();
+        return Files.readAllBytes(file);
     }
 
 }
