@@ -3,9 +3,6 @@ package io.github.mxz_schwarz.text_editor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.stream.Stream;
-import io.github.mxz_schwarz.parser.*;
 
 class Util {
 
@@ -23,8 +20,5 @@ class Util {
         return sb.toString().getBytes();
     }
 
-    static byte[] formatFile(Path file) throws IOException {
-        return Files.readAllBytes(file);
-    }
 
 }

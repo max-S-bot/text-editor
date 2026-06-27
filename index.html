@@ -3,7 +3,6 @@
 <html>
 <head>
     <title>Text Editor</title>
-    <script src="htmx.js"></script>
     <style>
         #dir {
 
@@ -18,7 +17,7 @@
 </head>
 <body>
     <div id="dir"></div>
-    <textarea id="file" name="file" hx-post="/file" hx-swap="none"></textarea>
+    <textarea id="file"></textarea>
     <div id="term">baz</div>
     <script>
         const elem = str => document.getElementById(str);
@@ -31,9 +30,7 @@
                         fetch(p.value).then(r => r.text()).then(t => (p.value.startsWith('/dir') ? dir : file)(t)));
         }
 
-        const file = t => {
-            elem('file').value = t;
-        }
+        const file = t => elem('file').value = t;
 
         window.addEventListener('load', () => 
             fetch('/dir').then(r => r.text()).then(t => dir(t)));

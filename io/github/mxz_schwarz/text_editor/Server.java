@@ -47,7 +47,7 @@ class Server {
 
     private static void handleFile(HttpExchange e) throws IOException {
         if (e.getRequestMethod().equals("GET"))
-            respond(e, Util.formatFile(file = Path.of("/").resolve(Path.of("/file").relativize(Path.of(e.getRequestURI().toString())))), "text/plain");
+            respond(e, Files.readAllBytes(file = Path.of("/").resolve(Path.of("/file").relativize(Path.of(e.getRequestURI().toString())))), "text/plain");
         else if (file != null) {
             Files.write(file, e.getRequestBody().readAllBytes());
             e.sendResponseHeaders(204, -1);
