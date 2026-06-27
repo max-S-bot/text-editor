@@ -1,2 +1,2 @@
 
-java ./io/github/mxz_schwarz/text_editor/Server.java
+java -cp ./parser.jar ./io/github/mxz_schwarz/text_editor/Server.java

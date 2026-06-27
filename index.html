@@ -17,8 +17,21 @@
     </style>
 </head>
 <body>
-    <div id="dir" hx-get="/dir" hx-trigger="load" hx-swap="innnerHTML"></div>
+    <div id="dir"></div>
     <textarea id="file" name="file" hx-post="/file" hx-swap="none"></textarea>
     <div id="term">baz</div>
+    <script>
+        const elem = str => document.getElementById(str);
+
+        window.addEventListener('load', () => 
+            fetch('/dir').then(r => r.text()).then(t => (elem('dir').innerHTML = t), dir()));
+
+        const dir = () => {
+            for (const p of elem('dir').children) console.log(p.value),
+                p.addEventListener('click', () =>
+                    fetch(p.value).then(r => r.text()).then(t => elem(p.value.slice(0, p.value.indexOf('/', 1))).innerHTML = t));
+        }
+        
+    </script>
 </body>
 </html>

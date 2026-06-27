@@ -6,7 +6,6 @@ import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.io.IOException;
-import java.util.Arrays;
 
 class Server {
 
@@ -49,9 +48,10 @@ class Server {
     private static void handleFile(HttpExchange e) throws IOException {
         if (e.getRequestMethod().equals("GET"))
             respond(e, Util.formatFile(file = Path.of("/").resolve(Path.of("/file").relativize(Path.of(e.getRequestURI().toString())))), "text/plain");
-        else if (file != null)
+        else if (file != null) {
             Files.write(file, Util.objify(e.getRequestBody().readAllBytes()).get("file").getBytes());
-        e.sendResponseHeaders(204, -1);
+            e.sendResponseHeaders(204, -1);
+        }
     }
 
     private static void respond(HttpExchange e, byte[] response, String contentType) throws IOException {
