@@ -49,7 +49,7 @@ class Server {
         if (e.getRequestMethod().equals("GET"))
             respond(e, Util.formatFile(file = Path.of("/").resolve(Path.of("/file").relativize(Path.of(e.getRequestURI().toString())))), "text/plain");
         else if (file != null) {
-            Files.write(file, Util.objify(e.getRequestBody().readAllBytes()).get("file").getBytes());
+            Files.write(file, e.getRequestBody().readAllBytes());
             e.sendResponseHeaders(204, -1);
         }
     }

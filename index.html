@@ -23,15 +23,25 @@
     <script>
         const elem = str => document.getElementById(str);
 
-        window.addEventListener('load', () => 
-            fetch('/dir').then(r => r.text()).then(t => (elem('dir').innerHTML = t), dir()));
-
-        const dir = () => {
-            for (const p of elem('dir').children) console.log(p.value),
-                p.addEventListener('click', () =>
-                    fetch(p.value).then(r => r.text()).then(t => elem(p.value.slice(0, p.value.indexOf('/', 1))).innerHTML = t));
+        const dir = t => {
+            elem('dir').innerHTML = t;
+            for (const p of elem('dir').children) 
+                if (p.nodeName === 'BUTTON')
+                    p.addEventListener('click', () =>
+                        fetch(p.value).then(r => r.text()).then(t => (p.value.startsWith('/dir') ? dir : file)(t)));
         }
-        
+
+        const file = t => {
+            elem('file').value = t;
+        }
+
+        window.addEventListener('load', () => 
+            fetch('/dir').then(r => r.text()).then(t => dir(t)));
+
+        elem('file').addEventListener('change', () => fetch('/file', {
+            method: 'POST',
+            body: elem('file').value
+        }));
     </script>
 </body>
 </html>
