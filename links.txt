@@ -1,0 +1,12 @@
+https://docs.oracle.com/en/java/javase/25/docs/api/jdk.httpserver/com/sun/net/httpserver/package-summary.html
+https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/nio/file/Path.html
+https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/nio/file/Files.html
+
+https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/textarea
+https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/checkbox
+https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/label
+https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/display
+https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/link
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Type

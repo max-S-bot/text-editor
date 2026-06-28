@@ -26,7 +26,7 @@ class Server {
     private static void handleGet(HttpExchange e) throws IOException {
         var path = e.getRequestURI().toString().substring(1);
         if (path.equals("")) {
-            path = "index.html";
+            path = "./frontend/index.html";
             loading = true;
         }
         respond(e, Files.readAllBytes(Path.of(path)), 
@@ -34,7 +34,8 @@ class Server {
                 case ".js" -> "text/javascript";
                 case ".html" -> "text/html";
                 case ".jpg", ".ico" -> "image/jpeg";
-                default -> null;
+                case ".css" -> "text/css";
+                default -> "text/plain";
             });
     }
 

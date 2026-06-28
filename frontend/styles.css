@@ -1,0 +1,16 @@
+#outerDir {
+    height: 100vh;
+    float: left;
+    display: inline;
+    width: 20%;
+}
+#file {
+    height: 70vh;
+    float: left;
+    display: inline;
+    width: 79%;
+}
+#term {
+    width: 80vw;
+    height: 30vh;
+}
