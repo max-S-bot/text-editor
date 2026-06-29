@@ -43,7 +43,7 @@ class Server {
         if (loading) loading = false;
         else 
             dir = Path.of("/").resolve(Path.of("/dir").relativize(Path.of(e.getRequestURI().toString())));
-        respond(e, Util.formatDir(dir), "text/html");
+        respond(e, formatDir(dir), "text/html");
     }
 
     private static void handleFile(HttpExchange e) throws IOException {
@@ -60,6 +60,18 @@ class Server {
         e.sendResponseHeaders(200, response.length);
         e.getResponseBody().write(response);
         e.close();
+    }
+
+    private static byte[] formatDir(Path dir) throws IOException {
+        var parent = dir.getParent() == null ? dir : dir.getParent();
+        var sb = new StringBuilder("<button " +"value=\"/dir" + parent.toString() + "\""+ ">..</button><br>");
+        for (var p : Files.list(dir).toList())
+            sb.append("<button " +
+            (Files.isDirectory(p) 
+                ? "value=\"/dir" + p.toString() + "\""
+                : "value=\"/file" + p.toString() + "\"")
+            + ">" + dir.relativize(p).toString() + "</button><br>");
+        return sb.toString().getBytes();
     }
 
 }

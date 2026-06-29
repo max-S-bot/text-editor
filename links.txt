@@ -14,3 +14,5 @@ https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Type
 
 https://stackoverflow.com/questions/3705804/css-positioning-elements-next-to-each-other
 https://stackoverflow.com/questions/10075524/sizing-and-positioning-elements-based-on-window-width
+https://stackoverflow.com/questions/424192/html-textarea-horizontal-scroll
+https://stackoverflow.com/questions/6637341/use-tab-to-indent-in-textarea
