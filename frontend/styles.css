@@ -1,16 +1,33 @@
-#outerDir {
-    height: 100vh;
+body { 
+    overflow: hidden; 
+}
+#left {
     float: left;
     display: inline;
     width: 20%;
+    height: 99vh;
+    overflow: scroll;
 }
-#file {
-    height: 70vh;
+#right {
     float: left;
     display: inline;
     width: 79%;
+    max-height: 99vh;
+    overflow: scroll;
+}
+#file {
+    width: 98%;
+    height: 69vh;
 }
 #term {
-    width: 80vw;
+    width: 98%;
     height: 30vh;
+}
+#out {
+    width: 100%;
+    min-height: 85%;
+}
+#in {
+    width: 100%;
+    height: 15%;
 }

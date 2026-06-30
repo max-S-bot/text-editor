@@ -30,7 +30,6 @@ const dealWithDots = () => {
 elem('showDotFiles').addEventListener('input', dealWithDots);
 
 elem('file').addEventListener('keydown', function(e) {
-    console.log(e)
     if (e.key !== 'Tab') return;
     e.preventDefault();
     const start = this.selectionStart;

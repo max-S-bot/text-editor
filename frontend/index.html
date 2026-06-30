@@ -3,16 +3,21 @@
 <html>
 <head>
     <title>Text Editor</title>
-    <link href="/frontend/styles.css" rel="stylesheet" type/>
+    <link href="/frontend/styles.css" rel="stylesheet"/>
 </head>
 <body>
-    <div id="outerDir">
-        <input id="showDotFiles" type="checkbox">
+    <div id="left">
+        <input id="showDotFiles" type="checkbox"/>
         <label for="showDotFiles">show dot files</label>
         <div id="dir"></div>
     </div>
-    <textarea id="file" wrap="off"></textarea>
-    <div id="term">baz</div>
+    <div id="right">
+        <textarea id="file" wrap="off"></textarea>
+        <div id="term">
+            <pre id="out"></pre>
+            <textarea id="in"></textarea>
+        </div>
+    </div>
     <script src="/frontend/script.js"></script>
 </body>
-</html>
+</html> 
