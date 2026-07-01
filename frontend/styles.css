@@ -1,33 +1,37 @@
 body { 
-    overflow: hidden; 
+    overflow: hidden;
 }
 #left {
     float: left;
     display: inline;
     width: 20%;
-    height: 99vh;
+    height: 99%;
     overflow: scroll;
 }
 #right {
     float: left;
     display: inline;
     width: 79%;
-    max-height: 99vh;
-    overflow: scroll;
+    height: 99vh;
+    overflow: hidden;
 }
 #file {
     width: 98%;
     height: 69vh;
 }
 #term {
-    width: 98%;
-    height: 30vh;
+    height: auto;
+    overflow: hidden;
 }
 #out {
-    width: 100%;
-    min-height: 85%;
+    width: 98%;
+    height: 18vh;
+    overflow: scroll;
 }
 #in {
-    width: 100%;
-    height: 15%;
+    width: 98%;
+    min-height: 
+    height: auto;
+    bottom: 0;
+    right: 0;
 }

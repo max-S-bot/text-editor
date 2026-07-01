@@ -11,6 +11,8 @@ class Server {
 
     private Server() {}
 
+    private static final Runtime runtime = Runtime.getRuntime();
+
     private static Path dir = Path.of("/home/mxz-schwarz");
     private static boolean loading = true;
     private static Path file = null;
@@ -20,6 +22,7 @@ class Server {
         server.createContext("/", Server::handleGet);
         server.createContext("/dir", Server::handleDir);
         server.createContext("/file", Server::handleFile);
+        server.createContext("/term", Server::handleTerm);
         server.start();
     }
 
@@ -55,6 +58,15 @@ class Server {
         }
     }
 
+    private static void handleTerm(HttpExchange e) throws IOException {
+        try {
+        var p = runtime.exec(new String[]{"bash", "-c", new String(e.getRequestBody().readAllBytes())});
+        respond(e, p.getInputStream().readAllBytes(), "text/plain");
+        } catch (IOException ioe) {
+            IO.println(ioe.getMessage());
+        }
+    }
+
     private static void respond(HttpExchange e, byte[] response, String contentType) throws IOException {
         e.getResponseHeaders().add("content-type", contentType);
         e.sendResponseHeaders(200, response.length);
@@ -66,11 +78,9 @@ class Server {
         var parent = dir.getParent() == null ? dir : dir.getParent();
         var sb = new StringBuilder("<button " +"value=\"/dir" + parent.toString() + "\""+ ">..</button><br>");
         for (var p : Files.list(dir).toList())
-            sb.append("<button " +
-            (Files.isDirectory(p) 
-                ? "value=\"/dir" + p.toString() + "\""
-                : "value=\"/file" + p.toString() + "\"")
-            + ">" + dir.relativize(p).toString() + "</button><br>");
+            sb.append("<button value=\"/" +
+            (Files.isDirectory(p) ? "dir" : "file") +
+            p.toString() + "\">" + dir.relativize(p).toString() + "</button><br>");
         return sb.toString().getBytes();
     }
 

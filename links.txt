@@ -8,6 +8,7 @@ https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/label
 https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/display
 https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/link
 https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/link
+https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollHeight
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Type
@@ -17,3 +18,5 @@ https://stackoverflow.com/questions/10075524/sizing-and-positioning-elements-bas
 https://stackoverflow.com/questions/424192/html-textarea-horizontal-scroll
 https://stackoverflow.com/questions/6637341/use-tab-to-indent-in-textarea
 https://stackoverflow.com/questions/2937929/how-to-make-a-div-scrollable-instead-of-body
+https://stackoverflow.com/questions/52016966/this-keyword-inside-addeventlistener-callback
+https://stackoverflow.com/questions/3616572/how-to-position-a-div-in-bottom-right-corner-of-a-browser
