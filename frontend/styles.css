@@ -30,8 +30,8 @@ body {
 }
 #in {
     width: 98%;
-    min-height: 
     height: auto;
     bottom: 0;
     right: 0;
+    overflow: wrap;
 }

@@ -9,9 +9,12 @@ https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/display
 https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/link
 https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/link
 https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollHeight
+https://developer.mozilla.org/en-US/docs/Web/HTML/How_to/Use_data_attributes
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status
 https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Type
+https://developer.mozilla.org/en-US/docs/Web/API/Response
+https://developer.mozilla.org/en-US/docs/Web/API/Storage
 
 https://stackoverflow.com/questions/3705804/css-positioning-elements-next-to-each-other
 https://stackoverflow.com/questions/10075524/sizing-and-positioning-elements-based-on-window-width

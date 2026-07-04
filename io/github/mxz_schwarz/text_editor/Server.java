@@ -13,11 +13,16 @@ class Server {
 
     private static final Runtime runtime = Runtime.getRuntime();
 
-    private static Path dir = Path.of("/home/mxz-schwarz");
+    private static Path startDir = Path.of("/home/mxz-schwarz");
+    private static int port = 8080;
     private static boolean loading = true;
-    private static Path file = null;
 
     static void main(String... args) throws IOException {
+        var list = java.util.Arrays.asList(args);
+        var portIdx = list.indexOf("--port");
+        var dirIdx = list.indexOf("--dir");
+        if (portIdx != -1) port = Integer.parseInt(args[portIdx + 1]);
+        if (dirIdx != -1) startDir = Path.of(args[dirIdx + 1]);
         var server = HttpServer.create(new InetSocketAddress(8080), 0);
         server.createContext("/", Server::handleGet);
         server.createContext("/dir", Server::handleDir);
@@ -43,25 +48,31 @@ class Server {
     }
 
     private static void handleDir(HttpExchange e) throws IOException {
-        if (loading) loading = false;
-        else 
-            dir = Path.of("/").resolve(Path.of("/dir").relativize(Path.of(e.getRequestURI().toString())));
+        Path dir = startDir;
+        if (loading) {
+            if (e.getRequestHeaders().containsKey("path"))
+                dir = Path.of(e.getRequestHeaders().getFirst("path"));
+            e.getResponseHeaders().set("dir", dir.toString());
+            loading = false;
+        } else 
+            dir = Path.of(e.getRequestHeaders().getFirst("path"));
         respond(e, formatDir(dir), "text/html");
     }
 
     private static void handleFile(HttpExchange e) throws IOException {
+        var file = e.getRequestHeaders().getFirst("path");
         if (e.getRequestMethod().equals("GET"))
-            respond(e, Files.readAllBytes(file = Path.of("/").resolve(Path.of("/file").relativize(Path.of(e.getRequestURI().toString())))), "text/plain");
+            respond(e, Files.readAllBytes(Path.of(file)), "text/plain");
         else if (file != null) {
-            Files.write(file, e.getRequestBody().readAllBytes());
+            Files.write(Path.of(file), e.getRequestBody().readAllBytes());
             e.sendResponseHeaders(204, -1);
         }
     }
 
     private static void handleTerm(HttpExchange e) throws IOException {
         try {
-        var p = runtime.exec(new String[]{"bash", "-c", new String(e.getRequestBody().readAllBytes())});
-        respond(e, p.getInputStream().readAllBytes(), "text/plain");
+            var p = runtime.exec(new String[]{"bash", "-c", new String(e.getRequestBody().readAllBytes())});
+            respond(e, p.getInputStream().readAllBytes(), "text/plain");
         } catch (IOException ioe) {
             IO.println(ioe.getMessage());
         }
@@ -76,11 +87,12 @@ class Server {
 
     private static byte[] formatDir(Path dir) throws IOException {
         var parent = dir.getParent() == null ? dir : dir.getParent();
-        var sb = new StringBuilder("<button " +"value=\"/dir" + parent.toString() + "\""+ ">..</button><br>");
+        var sb = new StringBuilder("<button " +"data-uri=\"/dir\" data-path=\"" + parent.toString() + "\">..</button><br>");
         for (var p : Files.list(dir).toList())
-            sb.append("<button value=\"/" +
-            (Files.isDirectory(p) ? "dir" : "file") +
-            p.toString() + "\">" + dir.relativize(p).toString() + "</button><br>");
+            sb.append("<button data-uri=\"/" +
+            (Files.isDirectory(p) ? "dir" : "file") + 
+            "\" data-path=\"" + p.toString() + "\">" + 
+            dir.relativize(p).toString() + "</button><br>");
         return sb.toString().getBytes();
     }
 

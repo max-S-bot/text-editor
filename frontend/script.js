@@ -1,23 +1,40 @@
+let foo
+const storage = sessionStorage;
 
-const elem = str => document.getElementById(str);
+const elems = {};
+const elem = id => id in  elems ? elems[id] : elems[id] = document.getElementById(id);
 
-const handleDir = t => {
+window.addEventListener('load', async () => {
+    const r = await fetch('/dir', {
+        method: 'GET',
+        headers: storage.dir == undefined ? {} : {'path' : storage.dir},
+    });
+    foo = r
+    const t = await r.text();
+    handleDir(t, {dataset: {path: r.headers.dir}});
+});
+
+const handleDir = (t, p) => {
+    console.log(p.dataset.path)
+    storage.dir = p.dataset.path;
     elem('dir').innerHTML = t;
     dealWithDots();
     for (const p of elem('dir').children) 
         if (p.nodeName === 'BUTTON')
             p.addEventListener('click', () =>
-                fetch(p.value).then(r => r.text()).then(t => (p.value.startsWith('/dir') ? handleDir : handleFile)(t)));
+                fetch(p.dataset.uri, {
+                    method: 'GET',
+                    headers: {'path': p.dataset.path},
+                }).then(r => r.text()).then(t => 
+                    p.dataset.uri === '/dir' ? handleDir(t, p) : handleFile(t, p)));
 }
 
-const handleFile = t => elem('file').value = t;
+const handleFile = (t, p) => [storage.file, elem('file').value] = [p.dataset.path, t];
 
-window.addEventListener('load', () => 
-    fetch('/dir').then(r => r.text()).then(t => handleDir(t)));
-
-elem('file').addEventListener('change', () => fetch('/file', {
+elem('file').addEventListener('change', () => storage.file == null ? null : fetch('/file', {
     method: 'POST',
-    body: elem('file').value
+    headers: {'path': storage.file},
+    body: elem('file').value,
 }));
 
 const dealWithDots = () => {
@@ -29,25 +46,33 @@ const dealWithDots = () => {
 
 elem('showDotFiles').addEventListener('input', dealWithDots);
 
-elem('file').addEventListener('keydown', function(e) {
-    if (e.key !== 'Tab') return;
-    e.preventDefault();
-    const start = this.selectionStart;
-    const end = this.selectionEnd;
-    this.value = this.value.substring(0, start) + '    ' + this.value.substring(end);
-    this.selectionStart = this.selectionEnd = start + 4;
+elem('file').addEventListener('keydown', e => {
+    if (e.key === 'Tab') handleTab(e, elem('file'));
+    if (e.key === '/' && e.ctrlKey) handleComment(e, elem('file'));
 });
+
+const handleTab = (e, text) => {
+    e.preventDefault();
+    const start = text.selectionStart;
+    const end = text.selectionEnd;
+    text.value = text.value.substring(0, start) + '    ' + text.value.substring(end);
+    text.selectionStart = text.selectionEnd = start + 4;
+};
+
+const handleComment = (e, text) => {
+    e.preventDefault();
+};
 
 elem('in').addEventListener('keydown', e => {
     if (e.key !== 'Enter') return;
     e.preventDefault();
     const com = elem('in').value;
+    elem('out').innerHTML += '$ ' + com + '\n';
     elem('in').value = '';
     fetch('/term', {
         method: 'POST',
-        body: com
+        body: com,
     }).then(r => r.text()).then(t => {
-        console.log(t);
         elem('out').innerHTML += t; 
         elem('out').scrollTo(0, elem('out').scrollHeight)
     });
