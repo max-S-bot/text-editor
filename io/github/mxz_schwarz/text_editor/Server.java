@@ -52,7 +52,7 @@ class Server {
         if (loading) {
             if (e.getRequestHeaders().containsKey("path"))
                 dir = Path.of(e.getRequestHeaders().getFirst("path"));
-            e.getResponseHeaders().set("dir", dir.toString());
+            e.getResponseHeaders().add("dir", dir.toString());
             loading = false;
         } else 
             dir = Path.of(e.getRequestHeaders().getFirst("path"));

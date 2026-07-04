@@ -1,4 +1,4 @@
-let foo
+
 const storage = sessionStorage;
 
 const elems = {};
@@ -9,13 +9,11 @@ window.addEventListener('load', async () => {
         method: 'GET',
         headers: storage.dir == undefined ? {} : {'path' : storage.dir},
     });
-    foo = r
     const t = await r.text();
-    handleDir(t, {dataset: {path: r.headers.dir}});
+    handleDir(t, {dataset: {path: r.headers.get('dir')}});
 });
 
 const handleDir = (t, p) => {
-    console.log(p.dataset.path)
     storage.dir = p.dataset.path;
     elem('dir').innerHTML = t;
     dealWithDots();
@@ -65,6 +63,7 @@ const handleComment = (e, text) => {
 
 elem('in').addEventListener('keydown', e => {
     if (e.key !== 'Enter') return;
+    if (e.shiftKey) return;
     e.preventDefault();
     const com = elem('in').value;
     elem('out').innerHTML += '$ ' + com + '\n';
@@ -74,6 +73,6 @@ elem('in').addEventListener('keydown', e => {
         body: com,
     }).then(r => r.text()).then(t => {
         elem('out').innerHTML += t; 
-        elem('out').scrollTo(0, elem('out').scrollHeight)
+        elem('out').scrollTo(0, elem('out').scrollHeight);
     });
 });
