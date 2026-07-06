@@ -33,7 +33,7 @@ class Server {
 
     private static void handleGet(HttpExchange e) throws IOException {
         var path = e.getRequestURI().toString().substring(1);
-        if (path.equals("")) {
+        if (path.equals("") || path.startsWith("?")) {
             path = "./frontend/index.html";
             loading = true;
         }

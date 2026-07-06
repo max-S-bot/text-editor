@@ -13,18 +13,21 @@ window.addEventListener('load', async () => {
     handleDir(t, {dataset: {path: r.headers.get('dir')}});
 });
 
-const handleDir = (t, p) => {
+const handleDir = (t, p, e) => {
+    if (e?.ctrlKey)
+        return window.open(`${window.location.origin}/?dir=${p.dataset.path}`);
     storage.dir = p.dataset.path;
+    elem('dirName').innerHTML = storage.dir.substring(storage.dir.lastIndexOf('/') + 1);
     elem('dir').innerHTML = t;
     dealWithDots();
     for (const p of elem('dir').children) 
         if (p.nodeName === 'BUTTON')
-            p.addEventListener('click', () =>
+            p.addEventListener('click', e =>
                 fetch(p.dataset.uri, {
                     method: 'GET',
                     headers: {'path': p.dataset.path},
                 }).then(r => r.text()).then(t => 
-                    p.dataset.uri === '/dir' ? handleDir(t, p) : handleFile(t, p)));
+                    p.dataset.uri === '/dir' ? handleDir(t, p, e) : handleFile(t, p)));
 }
 
 const handleFile = (t, p) => [storage.file, elem('file').value] = [p.dataset.path, t];
