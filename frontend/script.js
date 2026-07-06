@@ -5,9 +5,14 @@ const elems = {};
 const elem = id => id in  elems ? elems[id] : elems[id] = document.getElementById(id);
 
 window.addEventListener('load', async () => {
+    const query = location.search.slice(1).split('&')
+        .map(e => e.split('=')).reduce((a, c) => (a[c[0]] = c[1], a), {});
+    if ('dir' in query)
+        storage.dir = query.dir;
+    history.pushState(null, null, location.origin);
     const r = await fetch('/dir', {
         method: 'GET',
-        headers: storage.dir == undefined ? {} : {'path' : storage.dir},
+        headers: storage.dir ? {'path' : storage.dir} : {},
     });
     const t = await r.text();
     handleDir(t, {dataset: {path: r.headers.get('dir')}});
