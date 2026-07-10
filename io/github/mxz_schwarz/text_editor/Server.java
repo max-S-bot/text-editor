@@ -6,24 +6,27 @@ import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
 
 class Server {
 
     private Server() {}
 
-    private static final Runtime runtime = Runtime.getRuntime();
+    private static final Map<String, Shell> shells = new HashMap<>();
 
     private static Path startDir = Path.of("/home/mxz-schwarz");
     private static int port = 8080;
     private static boolean loading = true;
 
     static void main(String... args) throws IOException {
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> IO.println(e));
         var list = java.util.Arrays.asList(args);
         var portIdx = list.indexOf("--port");
         var dirIdx = list.indexOf("--dir");
         if (portIdx != -1) port = Integer.parseInt(args[portIdx + 1]);
         if (dirIdx != -1) startDir = Path.of(args[dirIdx + 1]);
-        var server = HttpServer.create(new InetSocketAddress(8080), 0);
+        var server = HttpServer.create(new InetSocketAddress(port), 0);
         server.createContext("/", Server::handleGet);
         server.createContext("/dir", Server::handleDir);
         server.createContext("/file", Server::handleFile);
@@ -54,6 +57,9 @@ class Server {
                 dir = Path.of(e.getRequestHeaders().getFirst("path"));
             e.getResponseHeaders().add("dir", dir.toString());
             loading = false;
+            var id = e.getRequestHeaders().getFirst("id");
+            if (!shells.containsKey(id))
+                shells.put(id, new Shell());
         } else 
             dir = Path.of(e.getRequestHeaders().getFirst("path"));
         respond(e, formatDir(dir), "text/html");
@@ -70,12 +76,7 @@ class Server {
     }
 
     private static void handleTerm(HttpExchange e) throws IOException {
-        try {
-            var p = runtime.exec(new String[]{"bash", "-c", new String(e.getRequestBody().readAllBytes())});
-            respond(e, p.getInputStream().readAllBytes(), "text/plain");
-        } catch (IOException ioe) {
-            IO.println(ioe.getMessage());
-        }
+        respond(e, shells.get(e.getRequestHeaders().getFirst("id")).run(new String(e.getRequestBody().readAllBytes())).getBytes(), "text/plain");
     }
 
     private static void respond(HttpExchange e, byte[] response, String contentType) throws IOException {

@@ -10,9 +10,14 @@ window.addEventListener('load', async () => {
     if ('dir' in query)
         storage.dir = query.dir;
     history.pushState(null, null, location.origin);
+    const headers = {};
+    if (!storage.id)
+        storage.id = String(Date.now() + Math.random());
+    headers.id = storage.id
+    if (storage.dir) headers.path = storage.dir;
     const r = await fetch('/dir', {
         method: 'GET',
-        headers: storage.dir ? {'path' : storage.dir} : {},
+        headers: headers,
     });
     const t = await r.text();
     handleDir(t, {dataset: {path: r.headers.get('dir')}});
@@ -20,7 +25,7 @@ window.addEventListener('load', async () => {
 
 const handleDir = (t, p, e) => {
     if (e?.ctrlKey)
-        return window.open(`${window.location.origin}/?dir=${p.dataset.path}`);
+        return open(`${window.location.origin}/?dir=${p.dataset.path}`, null, 'noopener=true');
     storage.dir = p.dataset.path;
     elem('dirName').innerHTML = storage.dir.substring(storage.dir.lastIndexOf('/') + 1);
     elem('dir').innerHTML = t;
@@ -37,7 +42,7 @@ const handleDir = (t, p, e) => {
 
 const handleFile = (t, p) => [storage.file, elem('file').value] = [p.dataset.path, t];
 
-elem('file').addEventListener('change', () => storage.file == null ? null : fetch('/file', {
+elem('file').addEventListener('keydown', () => storage.file == null ? null : fetch('/file', {
     method: 'POST',
     headers: {'path': storage.file},
     body: elem('file').value,
@@ -78,6 +83,7 @@ elem('in').addEventListener('keydown', e => {
     elem('in').value = '';
     fetch('/term', {
         method: 'POST',
+        headers: {id: storage.id},
         body: com,
     }).then(r => r.text()).then(t => {
         elem('out').innerHTML += t; 
