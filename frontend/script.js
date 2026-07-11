@@ -1,10 +1,11 @@
-
+let config;
+fetch('/config.json').then(r => r.json()).then(json => config = json); 
 const storage = sessionStorage;
 
 const elems = {};
 const elem = id => id in  elems ? elems[id] : elems[id] = document.getElementById(id);
 
-window.addEventListener('load', async () => {
+addEventListener('load', async () => {
     const query = location.search.slice(1).split('&')
         .map(e => e.split('=')).reduce((a, c) => (a[c[0]] = c[1], a), {});
     if ('dir' in query)
@@ -25,7 +26,7 @@ window.addEventListener('load', async () => {
 
 const handleDir = (t, p, e) => {
     if (e?.ctrlKey)
-        return open(`${window.location.origin}/?dir=${p.dataset.path}`, null, 'noopener=true');
+        return open(`${location.origin}/?dir=${p.dataset.path}`, null, 'noopener=true');
     storage.dir = p.dataset.path;
     elem('dirName').innerHTML = storage.dir.substring(storage.dir.lastIndexOf('/') + 1);
     elem('dir').innerHTML = t;
@@ -56,23 +57,6 @@ const dealWithDots = () => {
 }
 
 elem('showDotFiles').addEventListener('input', dealWithDots);
-
-elem('file').addEventListener('keydown', e => {
-    if (e.key === 'Tab') handleTab(e, elem('file'));
-    if (e.key === '/' && e.ctrlKey) handleComment(e, elem('file'));
-});
-
-const handleTab = (e, text) => {
-    e.preventDefault();
-    const start = text.selectionStart;
-    const end = text.selectionEnd;
-    text.value = text.value.substring(0, start) + '    ' + text.value.substring(end);
-    text.selectionStart = text.selectionEnd = start + 4;
-};
-
-const handleComment = (e, text) => {
-    e.preventDefault();
-};
 
 elem('in').addEventListener('keydown', e => {
     if (e.key !== 'Enter') return;
