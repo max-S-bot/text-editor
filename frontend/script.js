@@ -1,5 +1,5 @@
 let config;
-fetch('/config.json').then(r => r.json()).then(json => config = json); 
+fetch('/config.json').then(r => r.json()).then(json => config = Object.freeze(json)); 
 const storage = sessionStorage;
 
 const elems = {};
@@ -10,6 +10,12 @@ addEventListener('load', async () => {
         .map(e => e.split('=')).reduce((a, c) => (a[c[0]] = c[1], a), {});
     if ('dir' in query)
         storage.dir = query.dir;
+    if ('file' in storage)
+        fetch('/file'+storage.file, {
+            method: 'GET',
+            headers: {path: storage.file},
+        }).then(r => r.text()).then(t => 
+            handleFile(t, {dataset: {path: storage.file}}));
     history.pushState(null, null, location.origin);
     const headers = {};
     if (!storage.id)
@@ -36,7 +42,7 @@ const handleDir = (t, p, e) => {
             p.addEventListener('click', e =>
                 fetch(p.dataset.uri, {
                     method: 'GET',
-                    headers: {'path': p.dataset.path},
+                    headers: {path: p.dataset.path},
                 }).then(r => r.text()).then(t => 
                     p.dataset.uri === '/dir' ? handleDir(t, p, e) : handleFile(t, p)));
 }
