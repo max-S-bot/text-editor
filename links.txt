@@ -26,3 +26,6 @@ https://stackoverflow.com/questions/6637341/use-tab-to-indent-in-textarea
 https://stackoverflow.com/questions/2937929/how-to-make-a-div-scrollable-instead-of-body
 https://stackoverflow.com/questions/52016966/this-keyword-inside-addeventlistener-callback
 https://stackoverflow.com/questions/3616572/how-to-position-a-div-in-bottom-right-corner-of-a-browser
+
+https://www.electronjs.org/
+https://www.electronjs.org/docs/latest/
