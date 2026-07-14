@@ -7,7 +7,7 @@
         if (window.electronFetch) fetch = async (path, options) => 
             new Response(...await electronFetch(path, options));
     </script>
-    <link href="../frontend/styles.css" rel="stylesheet"/>
+    <link href="/frontend/styles.css" rel="stylesheet"/>
 </head>
 <body>
     <div id="left">
@@ -23,7 +23,7 @@
             <textarea id="in"></textarea>
         </div>
     </div>
-    <script src="../frontend/script.js"></script>
-    <script src="../frontend/keybindings.js"></script>
+    <script src="/frontend/script.js"></script>
+    <script src="/frontend/keybindings.js"></script>
 </body>
 </html> 
