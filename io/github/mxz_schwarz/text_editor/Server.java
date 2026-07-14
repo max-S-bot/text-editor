@@ -15,7 +15,6 @@ class Server {
 
     private static final Map<String, Shell> shells = new HashMap<>();
 
-    private static Path startDir = Path.of("/home/mxz-schwarz");
     private static int port = 8080;
     private static boolean loading = true;
 
@@ -23,9 +22,7 @@ class Server {
         Thread.setDefaultUncaughtExceptionHandler((t, e) -> IO.println(e));
         var list = java.util.Arrays.asList(args);
         var portIdx = list.indexOf("--port");
-        var dirIdx = list.indexOf("--dir");
         if (portIdx != -1) port = Integer.parseInt(args[portIdx + 1]);
-        if (dirIdx != -1) startDir = Path.of(args[dirIdx + 1]);
         var server = HttpServer.create(new InetSocketAddress(port), 0);
         server.createContext("/", Server::handleGet);
         server.createContext("/dir", Server::handleDir);
@@ -51,17 +48,13 @@ class Server {
     }
 
     private static void handleDir(HttpExchange e) throws IOException {
-        Path dir = startDir;
+        Path dir = Path.of(e.getRequestHeaders().getFirst("path"));
         if (loading) {
-            if (e.getRequestHeaders().containsKey("path"))
-                dir = Path.of(e.getRequestHeaders().getFirst("path"));
-            e.getResponseHeaders().add("dir", dir.toString());
             loading = false;
             var id = e.getRequestHeaders().getFirst("id");
             if (!shells.containsKey(id))
                 shells.put(id, new Shell());
-        } else 
-            dir = Path.of(e.getRequestHeaders().getFirst("path"));
+        }
         respond(e, formatDir(dir), "text/html");
     }
 
