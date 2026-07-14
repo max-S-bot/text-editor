@@ -50,7 +50,7 @@ const handleFile = (t, p) => [storage.file, elem('file').value] = [p.dataset.pat
 
 elem('file').addEventListener('keydown', () => storage.file == null ? null : fetch('/file', {
     method: 'POST',
-    headers: {'path': storage.file},
+    headers: {path: storage.file},
     body: elem('file').value,
 }));
 

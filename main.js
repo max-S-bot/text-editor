@@ -16,7 +16,7 @@ app.whenReady().then(() => {
     ipcMain.handle('fetch', require('./server.js'));
     createWindow();
     app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length === 0) 
+        if (BrowserWindow.getAllWindows().length === 0)
             createWindow();
     })
 });

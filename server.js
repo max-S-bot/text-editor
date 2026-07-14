@@ -20,16 +20,19 @@ const formatDir = dir => {
 
 const handleDir = options => {
     const dir = options.headers.path;
-    const headers = {};
     // if (options.headers.loading)
         // var id = e.getRequestHeaders().getFirst("id");
         // if (!shells.containsKey(id))
             // shells.put(id, new Shell());
-    return [formatDir(dir), {status: 200, headers}];
+    return [formatDir(dir), {}];
 };
 
 const handleFile = options => {
-
+    const file = options.headers.path;
+    if (options.method !== 'POST')
+        return [fs.readFileSync(file), {}];
+    else
+        return fs.writeFileSync(file, options.body), [null, {}];
 };
 
 const handleTerm = options => {
