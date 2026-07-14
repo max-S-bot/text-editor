@@ -1,3 +1,5 @@
+'use strict';
+
 elem('file').addEventListener('keydown', e => {
     if (e.key === 'Tab') handleTab(e, elem('file'));
     if (e.key === '/' && e.ctrlKey) handleComment(e, elem('file'));

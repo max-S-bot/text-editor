@@ -1,33 +1,34 @@
+'use strict';
+
 let config;
-fetch('/config.json').then(r => r.json()).then(json => config = Object.freeze(json)); 
+
 const storage = sessionStorage;
 
 const elems = {};
 const elem = id => id in  elems ? elems[id] : elems[id] = document.getElementById(id);
 
 addEventListener('load', async () => {
+    config = await ((await fetch('/config.json')).json())
     const query = location.search.slice(1).split('&')
         .map(e => e.split('=')).reduce((a, c) => (a[c[0]] = c[1], a), {});
     if ('dir' in query)
         storage.dir = query.dir;
+    // location.href = location.origin;
+    // history.pushState(null, null, location.origin);
     if ('file' in storage)
-        fetch('/file'+storage.file, {
-            method: 'GET',
-            headers: {path: storage.file},
-        }).then(r => r.text()).then(t => 
-            handleFile(t, {dataset: {path: storage.file}}));
-    history.pushState(null, null, location.origin);
+        fetch('/file', {headers: {path: storage.file, loading: true}})
+            .then(r => r.text()).then(t => 
+                handleFile(t, {dataset: {path: storage.file}}));
     const headers = {};
     if (!storage.id)
         storage.id = String(Date.now() + Math.random());
     headers.id = storage.id
-    if (storage.dir) headers.path = storage.dir;
-    const r = await fetch('/dir', {
-        method: 'GET',
-        headers: headers,
-    });
+    if (!storage.dir) 
+        storage.dir = config.startDir;
+    headers.path = storage.dir;
+    const r = await fetch('/dir', {headers: headers});
     const t = await r.text();
-    handleDir(t, {dataset: {path: r.headers.get('dir')}});
+    handleDir(t, {dataset: {path: storage.dir}});
 });
 
 const handleDir = (t, p, e) => {
@@ -40,11 +41,9 @@ const handleDir = (t, p, e) => {
     for (const p of elem('dir').children) 
         if (p.nodeName === 'BUTTON')
             p.addEventListener('click', e =>
-                fetch(p.dataset.uri, {
-                    method: 'GET',
-                    headers: {path: p.dataset.path},
-                }).then(r => r.text()).then(t => 
-                    p.dataset.uri === '/dir' ? handleDir(t, p, e) : handleFile(t, p)));
+                fetch(p.dataset.uri, {headers: {path: p.dataset.path}})
+                    .then(r => r.text()).then(t => 
+                        p.dataset.uri === '/dir' ? handleDir(t, p, e) : handleFile(t, p)));
 }
 
 const handleFile = (t, p) => [storage.file, elem('file').value] = [p.dataset.path, t];

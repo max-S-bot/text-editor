@@ -7,6 +7,7 @@ body {
     width: 20%;
     height: 99%;
     overflow: scroll;
+    scrollbar-width: none;
 }
 #right {
     float: left;
@@ -22,11 +23,13 @@ body {
 #term {
     height: auto;
     overflow: hidden;
+    scrollbar-width: none;
 }
 #out {
     width: 98%;
     height: 18vh;
     overflow: scroll;
+    scrollbar-width: none;
 }
 #in {
     width: 98%;
@@ -34,4 +37,5 @@ body {
     bottom: 0;
     right: 0;
     overflow: wrap;
+    scrollbar-width: none;
 }
