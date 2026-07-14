@@ -1,5 +1,7 @@
 'use strict';
 
+import * as cm from 'codemirror';
+
 let config;
 
 const storage = sessionStorage;

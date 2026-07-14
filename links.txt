@@ -29,3 +29,6 @@ https://stackoverflow.com/questions/3616572/how-to-position-a-div-in-bottom-righ
 
 https://www.electronjs.org/
 https://www.electronjs.org/docs/latest/
+
+https://nodejs.org/api/fs.html#class-fsdirent
+https://nodejs.org/api/path.html
