@@ -1,0 +1,24 @@
+{
+    "name": "text-editor",
+    "version": "1.0.0",
+    "description": "text editor",
+    "homepage": "https://github.com/max-S-bot/text-editor#readme",
+    "bugs": {
+        "url": "https://github.com/max-S-bot/text-editor/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/max-S-bot/text-editor.git"
+    },
+    "license": "ISC",
+    "author": "max-S-bot",
+    "type": "commonjs",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron --trace-warnings .",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "devDependencies": {
+        "electron": "^43.1.0"
+    }
+}
