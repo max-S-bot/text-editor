@@ -1,32 +1,33 @@
 'use strict';
 
-import { EditorView, basicSetup} from 'codemirror';
-import { keymap } from '@codemirror/view'
+import {basicSetup} from 'codemirror';
+import { EditorView, keymap } from '@codemirror/view'
 import { javascript } from '@codemirror/lang-javascript';
 import { indentWithTab } from "@codemirror/commands";
+import { Text } from '@codemirror/state'
 import * as language from '@codemirror/language';
 
 let config;
+let file;
 
 const storage = sessionStorage;
 
 const elems = {};
 const elem = id => id in  elems ? elems[id] : elems[id] = document.getElementById(id);
 
-addEventListener('load', async () => {
+(async () => {
     config = await ((await fetch('/config.json')).json())
     language.indentUnit.default = ' '.repeat(config.tabSize);
-    new EditorView({
+    file = new EditorView({
         basicSetup,
         parent: elem('file'),
         extensions: [basicSetup, javascript(), keymap.of(indentWithTab)],
     });
+    console.log(file.scaleY);
     const query = location.search.slice(1).split('&')
         .map(e => e.split('=')).reduce((a, c) => (a[c[0]] = c[1], a), {});
     if ('dir' in query)
         storage.dir = query.dir;
-    // location.href = location.origin;
-    // history.pushState(null, null, location.origin);
     if ('file' in storage)
         fetch('/file', {headers: {path: storage.file, loading: true}})
             .then(r => r.text()).then(t => 
@@ -41,11 +42,11 @@ addEventListener('load', async () => {
     const r = await fetch('/dir', {headers: headers});
     const t = await r.text();
     handleDir(t, {dataset: {path: storage.dir}});
-});
+})();
 
 const handleDir = (t, p, e) => {
     if (e?.ctrlKey)
-        return open(`${location.origin}/?dir=${p.dataset.path}`, '_blank', 'noopener=true');
+        return open(`${location.href}/?dir=${p.dataset.path}`, '_blank', 'noopener=true');
     storage.dir = p.dataset.path;
     elem('dirName').innerHTML = storage.dir.substring(storage.dir.lastIndexOf('/') + 1);
     elem('dir').innerHTML = t;
@@ -58,12 +59,16 @@ const handleDir = (t, p, e) => {
                         p.dataset.uri === '/dir' ? handleDir(t, p, e) : handleFile(t, p)));
 }
 
-const handleFile = (t, p) => [storage.file, elem('file').value] = [p.dataset.path, t];
+const handleFile = (t, p) => {
+    storage.file = p.dataset.path;
+    file.dispatch({changes: {from: 0, to: file.state.doc.length, insert: t}});
+};
+// [storage.file, elem('file').value] = [p.dataset.path, t];
 
 elem('file').addEventListener('keydown', () => storage.file == null ? null : fetch('/file', {
     method: 'POST',
     headers: {path: storage.file},
-    body: elem('file').value,
+    body: file.state.doc.toString(),
 }));
 
 const dealWithDots = () => {
