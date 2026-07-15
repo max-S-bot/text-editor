@@ -16,7 +16,7 @@
     "main": "main.js",
     "scripts": {
         "build": "node ./build.mjs",
-        "start": "electron --trace-warnings .",
+        "start": "electron --trace-warnings . &",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "devDependencies": {
