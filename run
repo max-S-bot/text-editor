@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/bash
 
-npm run build
+ps | awk '$4 == "java" {print $1}' | xargs kill &> /dev/null
+npm run build > /dev/null
 java ./io/github/mxz_schwarz/text_editor/Server.java $@ &
