@@ -1,0 +1,6 @@
+use process.handle instead of ipcMain for the electron back end.
+implement terminal in node for electron.
+implementing opening new windows in electron. 
+merge main and server js files.
+make the codemirror editor take up all of its alloted space when it's empty.
+probably going to make term, dir, and file dynamically resizable.
