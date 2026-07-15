@@ -16,7 +16,6 @@ const createWindow = () => {
 app.whenReady().then(() => {
     ipcMain.handle('fetch', require('./server.js'));
     protocol.handle('file', req => {
-        console.log(req)
         return new Response(fs.readFileSync(path.join('.', new URL(req.url).pathname)));
     })
     createWindow();

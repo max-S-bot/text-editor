@@ -1,6 +1,10 @@
 'use strict';
 
-import * as cm from 'codemirror';
+import { EditorView, basicSetup} from 'codemirror';
+import { keymap } from '@codemirror/view'
+import { javascript } from '@codemirror/lang-javascript';
+import { indentWithTab } from "@codemirror/commands";
+import * as language from '@codemirror/language';
 
 let config;
 
@@ -11,6 +15,12 @@ const elem = id => id in  elems ? elems[id] : elems[id] = document.getElementByI
 
 addEventListener('load', async () => {
     config = await ((await fetch('/config.json')).json())
+    language.indentUnit.default = ' '.repeat(config.tabSize);
+    new EditorView({
+        basicSetup,
+        parent: elem('file'),
+        extensions: [basicSetup, javascript(), keymap.of(indentWithTab)],
+    });
     const query = location.search.slice(1).split('&')
         .map(e => e.split('=')).reduce((a, c) => (a[c[0]] = c[1], a), {});
     if ('dir' in query)
@@ -35,7 +45,7 @@ addEventListener('load', async () => {
 
 const handleDir = (t, p, e) => {
     if (e?.ctrlKey)
-        return open(`${location.origin}/?dir=${p.dataset.path}`, null, 'noopener=true');
+        return open(`${location.origin}/?dir=${p.dataset.path}`, '_blank', 'noopener=true');
     storage.dir = p.dataset.path;
     elem('dirName').innerHTML = storage.dir.substring(storage.dir.lastIndexOf('/') + 1);
     elem('dir').innerHTML = t;
