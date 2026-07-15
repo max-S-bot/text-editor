@@ -63,7 +63,6 @@ const handleFile = (t, p) => {
     storage.file = p.dataset.path;
     file.dispatch({changes: {from: 0, to: file.state.doc.length, insert: t}});
 };
-// [storage.file, elem('file').value] = [p.dataset.path, t];
 
 elem('file').addEventListener('keydown', () => storage.file == null ? null : fetch('/file', {
     method: 'POST',

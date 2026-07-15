@@ -19,6 +19,7 @@ body {
 #file {
     width: 98%;
     height: 69vh;
+    overflow: scroll;
 }
 #term {
     height: auto;
