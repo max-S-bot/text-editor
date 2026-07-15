@@ -23,7 +23,6 @@ const elem = id => id in  elems ? elems[id] : elems[id] = document.getElementByI
         parent: elem('file'),
         extensions: [basicSetup, javascript(), keymap.of(indentWithTab)],
     });
-    console.log(file.scaleY);
     const query = location.search.slice(1).split('&')
         .map(e => e.split('=')).reduce((a, c) => (a[c[0]] = c[1], a), {});
     if ('dir' in query)

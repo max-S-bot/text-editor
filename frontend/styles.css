@@ -21,6 +21,7 @@ body {
     height: 69vh;
     overflow: scroll;
 }
+.cm-editor { height: 100%; }
 #term {
     height: auto;
     overflow: hidden;
