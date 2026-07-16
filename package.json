@@ -13,7 +13,7 @@
     "license": "ISC",
     "author": "max-S-bot",
     "type": "commonjs",
-    "main": "main.js",
+    "main": "server.js",
     "scripts": {
         "build": "node ./build.mjs",
         "start": "electron --trace-warnings . &",

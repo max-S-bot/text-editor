@@ -1,5 +1,3 @@
-use process.handle instead of ipcMain for the electron back end.
 implement terminal in node for electron.
 implementing opening new windows in electron. 
-merge main and server js files.
 probably going to make term, dir, and file dynamically resizable.
