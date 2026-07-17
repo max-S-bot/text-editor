@@ -2,3 +2,4 @@ implement terminal in node for electron.
 implementing opening new windows in electron. 
 probably going to make term, dir, and file dynamically resizable.
 implement language inference for the editor
+I am thinking about switching to node for the web backend in order to be able to reuse more code.
