@@ -26,6 +26,9 @@ https://stackoverflow.com/questions/6637341/use-tab-to-indent-in-textarea
 https://stackoverflow.com/questions/2937929/how-to-make-a-div-scrollable-instead-of-body
 https://stackoverflow.com/questions/52016966/this-keyword-inside-addeventlistener-callback
 https://stackoverflow.com/questions/3616572/how-to-position-a-div-in-bottom-right-corner-of-a-browser
+https://stackoverflow.com/questions/27458502/how-to-run-interactive-shell-command-inside-node-js?rq=3
+
+https://www.reddit.com/r/node/comments/o2zr8m/how_to_retrieve_value_returned_by_a_callback/ 
 
 https://www.electronjs.org/
 https://www.electronjs.org/docs/latest/
@@ -34,3 +37,5 @@ https://esbuild.github.io/
 
 https://nodejs.org/api/fs.html#class-fsdirent
 https://nodejs.org/api/path.html
+https://nodejs.org/docs/latest-v8.x/api/child_process.html#child_process_child_process_spawn_command_args_options
+https://nodejs.org/docs/latest-v8.x/api/stream.html#stream_class_stream_readable

@@ -3,13 +3,12 @@
 const { app, BrowserWindow, ipcMain, protocol } = require('electron');
 const path = require('path');
 const fs = require('fs');
+const spawn = require('child_process').spawn;
+
+const shells = {};
 
 const createWindow = () => {
-    const win = new BrowserWindow({
-        webPreferences: {
-            preload: path.join(__dirname, 'preload.js')
-        }
-    });
+    const win = new BrowserWindow();
     win.maximize()
     win.loadFile('/frontend/index.html');
 }
@@ -32,13 +31,12 @@ const fetch = async (req, p) => p in paths ? paths[p](req) : handleGet(p);
 
 const handleGet = p => new Response(fs.readFileSync(path.join('.', p)));
 
-const handleDir = req => new Response(formatDir(req.headers.get('path')));
-// {
-//     if (options.headers.loading)
-//         var id = e.getRequestHeaders().getFirst("id");
-//         if (!shells.containsKey(id))
-//             shells.put(id, new Shell());
-// };
+const handleDir = req => {
+    const id = req.headers.get('id');
+    if (!(id in shells))
+        shells[id] = spawn('bash');
+    return new Response(formatDir(req.headers.get('path')));
+};
 
 const formatDir = dir => {
     let sb = '<button data-uri="/dir" data-path="' + path.parse(dir).dir + '">..</button><br>';
@@ -51,13 +49,12 @@ const formatDir = dir => {
 };
 
 
-const handleFile = req => req.method !== 'POST' 
+const handleFile = req => req.method === 'GET' 
     ? new Response(fs.readFileSync(req.headers.get('path')))
     : (fs.writeFileSync(req.headers.get('path'), req.body), new Response());
 
-const handleTerm = req => {
-
-};
+const handleTerm = async req => (shells[req.headers.get('id')].stdin.write(`${await req.text()}\n`),
+	await new Promise(r => shells[req.headers.get('id')].stdout.on('data', out => r(new Response(out)))));
 
 const paths = {
     '/dir': handleDir,
