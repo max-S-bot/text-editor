@@ -29,7 +29,7 @@ app.on('window-all-closed', () => {
 
 const fetch = async (req, p) => p in paths ? paths[p](req) : handleGet(p);
 
-const handleGet = p => new Response(fs.readFileSync(path.join('.', p)));
+const handleGet = p => new Response(p.startsWith('?') ? './frontend/index.html' : fs.readFileSync(path.join('.', p)));
 
 const handleDir = req => {
     const id = req.headers.get('id');

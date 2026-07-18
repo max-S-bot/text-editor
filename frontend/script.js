@@ -1,6 +1,6 @@
 'use strict';
 
-import {basicSetup} from 'codemirror';
+import { basicSetup } from 'codemirror';
 import { EditorView, keymap } from '@codemirror/view'
 import { javascript } from '@codemirror/lang-javascript';
 import { indentWithTab } from "@codemirror/commands";
@@ -45,7 +45,7 @@ const elem = id => id in  elems ? elems[id] : elems[id] = document.getElementByI
 
 const handleDir = (t, p, e) => {
     if (e?.ctrlKey)
-        return open(`${location.href}/?dir=${p.dataset.path}`, '_blank', 'noopener=true');
+        return open(`${location.origin}${location.pathname}?dir=${p.dataset.path}`, '_blank', 'noopener=true');
     storage.dir = p.dataset.path;
     elem('dirName').innerHTML = storage.dir.substring(storage.dir.lastIndexOf('/') + 1);
     elem('dir').innerHTML = t;
@@ -79,8 +79,7 @@ const dealWithDots = () => {
 elem('showDotFiles').addEventListener('input', dealWithDots);
 
 elem('in').addEventListener('keydown', e => {
-    if (e.key !== 'Enter') return;
-    if (e.shiftKey) return;
+    if (e.key !== 'Enter' || e.shiftKey) return;
     e.preventDefault();
     const com = elem('in').value;
     elem('out').innerHTML += '$ ' + com + '\n';
