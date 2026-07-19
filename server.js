@@ -9,7 +9,6 @@ const shells = {};
 
 const createWindow = () => {
     const win = new BrowserWindow();
-    win.maximize()
     win.loadFile('/frontend/index.html');
 }
 
@@ -22,6 +21,8 @@ app.whenReady().then(() => {
             createWindow();
     })
 });
+
+app.on('browser-window-created', (_, w) => (w.maximize()));
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit();
