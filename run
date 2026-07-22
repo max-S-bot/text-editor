@@ -1,5 +1,5 @@
 #!/bin/bash
 
-ps | awk '$4 == "java" {print $1}' | xargs kill &> /dev/null
+ps all | awk '$13 == "java" {print $3}' | xargs kill &> /dev/null
 npm run build > /dev/null
 java ./io/github/mxz_schwarz/text_editor/Server.java $@ &
