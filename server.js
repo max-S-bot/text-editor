@@ -6,16 +6,21 @@ const fs = require('fs');
 const spawn = require('child_process').spawn;
 
 const shells = {};
-
-const createWindow = () => {
-    const win = new BrowserWindow();
-    win.loadFile('/frontend/index.html');
-}
+protocol.registerSchemesAsPrivileged([{scheme: 'scheme', privileges: {
+    standard: true,
+    supportFetchAPI: true,
+    corsEnabled: true,
+    allowServiceWorkers: true,
+    stream: true,
+    codeCache: true,
+    allowExtensions: true,
+}}]);
 
 app.whenReady().then(() => {
-    protocol.handle('file', req => 
+    protocol.handle('scheme', req => 
         fetch(req, new URL(req.url).pathname));
-    createWindow();
+    const win = new BrowserWindow();
+    win.loadURL('scheme://host/');
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0)
             createWindow();
@@ -30,7 +35,8 @@ app.on('window-all-closed', () => {
 
 const fetch = async (req, p) => p in paths ? paths[p](req) : handleGet(p);
 
-const handleGet = p => new Response(p.startsWith('?') ? './frontend/index.html' : fs.readFileSync(path.join('.', p)));
+const handleGet = p => new Response(fs.readFileSync(path.join('.', 
+    p.startsWith('?') || p === '/' ? './frontend/index.html' : p)));
 
 const handleDir = req => {
     const id = req.headers.get('id');
