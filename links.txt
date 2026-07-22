@@ -35,6 +35,8 @@ https://www.electronjs.org/docs/latest/
 
 https://esbuild.github.io/  
 
+https://codemirror.net/
+
 https://nodejs.org/api/fs.html#class-fsdirent
 https://nodejs.org/api/path.html
 https://nodejs.org/docs/latest-v8.x/api/child_process.html#child_process_child_process_spawn_command_args_options
