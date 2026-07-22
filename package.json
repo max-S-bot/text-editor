@@ -13,10 +13,12 @@
     "license": "ISC",
     "author": "max-S-bot",
     "type": "commonjs",
-    "main": "server.js",
+    "main": "electron.js",
     "scripts": {
         "build": "node ./build.mjs",
-        "start": "electron --trace-warnings . > /dev/null &",
+        "start": "electron --trace-warnings .",
+        "electron": "npm run start > /dev/null &",
+        "web": "node web.js > /dev/null &",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "devDependencies": {
