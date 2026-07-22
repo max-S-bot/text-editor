@@ -39,7 +39,7 @@ class Server {
         }
         respond(e, Files.readAllBytes(Path.of(path)), 
             switch(path.substring(path.lastIndexOf("."))) {
-                case ".js" -> "text/javascript";
+                case ".js" -> "text/javascript; charset=utf-8";
                 case ".html" -> "text/html";
                 case ".jpg", ".ico" -> "image/jpeg";
                 case ".css" -> "text/css";

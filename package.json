@@ -28,6 +28,7 @@
     },
     "dependencies": {
         "@codemirror/lang-javascript": "^6.2.5",
+        "@codemirror/language-data": "^6.5.2",
         "codemirror": "^6.0.2"
     }
 }

@@ -1,14 +1,20 @@
 'use strict';
 
 import { basicSetup } from 'codemirror';
-import { EditorView, keymap } from '@codemirror/view'
-import { javascript } from '@codemirror/lang-javascript';
+import { EditorView, keymap } from '@codemirror/view';
 import { indentWithTab } from "@codemirror/commands";
-import { Text } from '@codemirror/state'
-import * as language from '@codemirror/language';
+import { Text, EditorState } from '@codemirror/state'
+import { indentUnit } from '@codemirror/language';
+import { languages } from '@codemirror/language-data';
 
 let config;
 let file;
+
+const langs = languages.reduce((ls, l) => {
+    for (const e of l.extensions)
+        ls[e] = l;
+    return ls;
+}, {});
 
 const storage = sessionStorage;
 
@@ -17,26 +23,23 @@ const elem = id => id in  elems ? elems[id] : elems[id] = document.getElementByI
 
 (async () => {
     config = await ((await fetch('/config.json')).json())
-    language.indentUnit.default = ' '.repeat(config.tabSize);
+    indentUnit.default = ' '.repeat(config.tabSize);
     file = new EditorView({
-        basicSetup,
         parent: elem('file'),
-        extensions: [basicSetup, javascript(), keymap.of(indentWithTab)],
+        extensions: [basicSetup, keymap.of(indentWithTab)],
     });
     const query = location.search.slice(1).split('&')
         .map(e => e.split('=')).reduce((a, c) => (a[c[0]] = c[1], a), {});
-    if ('dir' in query)
-        storage.dir = query.dir;
     if ('file' in storage)
-        fetch('/file', {headers: {path: storage.file, loading: true}})
+        fetch('/file', {headers: {path: storage.file}})
             .then(r => r.text()).then(t => 
                 handleFile(t, {dataset: {path: storage.file}}));
     const headers = {};
     if (!storage.id)
         storage.id = String(Date.now() + Math.random());
     headers.id = storage.id
-    if (!storage.dir) 
-        storage.dir = config.startDir;
+    if (!storage.dir)
+        storage.dir = 'dir' in query ? query.dir : config.startDir;
     headers.path = storage.dir;
     const r = await fetch('/dir', {headers: headers});
     const t = await r.text();
@@ -58,9 +61,17 @@ const handleDir = (t, p, e) => {
                         p.dataset.uri === '/dir' ? handleDir(t, p, e) : handleFile(t, p)));
 }
 
-const handleFile = (t, p) => {
+const handleFile = async (t, p) => {
     storage.file = p.dataset.path;
-    file.dispatch({changes: {from: 0, to: file.state.doc.length, insert: t}});
+    const extensions = [basicSetup, keymap.of(indentWithTab)]
+    const idx = storage.file.lastIndexOf('.');
+    const ext = storage.file.slice(idx + 1);
+    if (idx !== -1 && ext in langs)
+        extensions.push(await langs[ext].load());
+    file.setState(EditorState.create({
+        doc: t,
+        extensions,
+    }));
 };
 
 elem('file').addEventListener('keydown', () => storage.file == null ? null : fetch('/file', {
