@@ -3,9 +3,19 @@ body { overflow: hidden; }
     float: left;
     display: inline;
     width: 20%;
-    height: 99%;
+    height: 99vh;
+    overflow: none;
+
+}
+#dir {
+    height: 90%;
     overflow: scroll;
     scrollbar-width: none;
+}
+button {
+    margin: 1vh;
+    min-height: 4vh;
+    border-style: none;
 }
 #right {
     float: left;
