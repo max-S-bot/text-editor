@@ -1,3 +1,0 @@
-probably going to make term, dir, and file dynamically resizable.
-potentially make something like a dropdown for directories
-use JSON to send over directory information instead of generating html
