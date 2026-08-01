@@ -1,7 +1,8 @@
 'use strict';
 
 const { app, BrowserWindow, ipcMain, protocol } = require('electron');
-const handlers = require('./handlers.js');
+const fs = require('fs');
+const {getPath, handleDir, getFile, postFile, handleTerm} = require('./util.js');
 
 protocol.registerSchemesAsPrivileged([{scheme: 'scheme', privileges: {
     standard: true,
@@ -30,10 +31,10 @@ app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit();
 });
 
-const fetch = async (req, p) => p in paths ? handlers[paths[p]](req) : handlers.handleGet(p);
+const fetch = async (req, p) => new Response(p in paths ? await paths[p](req) : fs.readFileSync(getPath(p)));
 
 const paths = {
-    '/dir': 'handleDir',
-    '/file': 'handleFile',
-    '/term': 'handleTerm',
+    '/dir': req => handleDir(req.headers),
+    '/file': async req => req.method === 'GET' ? getFile(req.headers) : postFile(req.headers, await req.bytes()),
+    '/term': async req => handleTerm(req.headers, await req.text()),
 };
