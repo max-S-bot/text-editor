@@ -6,7 +6,7 @@ const spawn = require('child_process').spawn;
 
 const shells = {};
 
-const getPath = p => path.join(__dirname, 
+const getPath = p => path.join(__dirname, '..',
     p.startsWith('?') || p === '/' ? '/frontend/index.html' : p);
 
 const handleDir = headers => {
