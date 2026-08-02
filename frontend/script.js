@@ -104,3 +104,8 @@ elem('in').addEventListener('keydown', e => {
         elem('out').scrollTo(0, elem('out').scrollHeight);
     });
 });
+
+document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.code === 'Backquote')
+        elem('in').focus();
+});
