@@ -1,5 +1,4 @@
 probably going to make term, dir, and file dynamically resizable.
 potentially make something like a dropdown for directories
 use JSON to send over directory information instead of generating html
-make tabs within the application instead of opening new tabs/windows to open a new directory
-switch to typescript
+make tabs within the application to have multiple files open at a time
