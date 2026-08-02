@@ -17,12 +17,14 @@ const langs = languages.reduce((ls, l) => {
 }, {});
 
 const storage = sessionStorage;
+const term = 'term' in storage ? JSON.parse(storage.term) : [];
+let termIdx = term.length;
 
 const elems = {};
 const elem = id => id in  elems ? elems[id] : elems[id] = document.getElementById(id);
 
 (async () => {
-    config = await ((await fetch('/config.json')).json())
+    config = await ((await fetch('/config.json')).json());
     indentUnit.default = ' '.repeat(config.tabSize);
     file = new EditorView({
         parent: elem('file'),
@@ -37,13 +39,11 @@ const elem = id => id in  elems ? elems[id] : elems[id] = document.getElementByI
     const headers = {};
     if (!storage.id)
         storage.id = String(Date.now() + Math.random());
-    headers.id = storage.id
+    headers.id = storage.id;
     if (!storage.dir)
         storage.dir = 'dir' in query ? query.dir : config.startDir;
     headers.path = storage.dir;
-    const r = await fetch('/dir', {headers: headers});
-    const t = await r.text();
-    handleDir(t, {path: storage.dir});
+    handleDir(await ((await fetch('/dir', {headers: headers})).text()), {path: storage.dir});
 })();
 
 const handleDir = (t, e, ev) => {
@@ -94,9 +94,15 @@ const dealWithDots = () => {
 elem('showDotFiles').addEventListener('input', dealWithDots);
 
 elem('in').addEventListener('keydown', e => {
+    console.log(termIdx)
+    if (e.key === 'ArrowUp' && (termIdx - 1) in term) elem('in').value = term[--termIdx];
+    if (e.key === 'ArrowDown' &&(termIdx + 1) in term) elem('in').value = term[++termIdx];
     if (e.key !== 'Enter' || e.shiftKey) return;
     e.preventDefault();
     const com = elem('in').value;
+    term.push(com);
+    termIdx = term.length;
+    storage.term = JSON.stringify(term);
     elem('out').innerHTML += '$ ' + com + '\n';
     elem('in').value = '';
     fetch('/term', {
