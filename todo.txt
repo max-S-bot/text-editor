@@ -1,6 +1,5 @@
 probably going to make term, dir, and file dynamically resizable.
 potentially make something like a dropdown for directories
-use JSON to send over directory information instead of generating html
 make tabs within the application to have multiple files open at a time
 possibly use a separate npm repo for the frontend and backend because it's iffy as it is and I think i would have to do so in order to use TS for both.
 add keybinding so that ctrl+` changes focus to the terminal or to the file if focus is already on terminal
