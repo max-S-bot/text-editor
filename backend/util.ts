@@ -9,20 +9,21 @@ const shells: Record<string, ChildProcess> = {};
 const getPath = (p: string): string => path.join(import.meta.dirname, '..',
     p.startsWith('/?') || p === '/' ? '/frontend/index.html' : p);
 
-const handleDir = (path: string, id: string) => {
+const handleDir = (path: string, id: string): string => {
     if (!(id in shells))
         shells[id] = spawn('bash');
-    return formatDir(path);
+    return JSON.stringify(formatDir(path));
 };
 
-const formatDir = (dir: string): string => {
-    let sb = '<button data-uri="/dir" data-path="' + path.parse(dir).dir + '">..</button><br>';
+const formatDir = (dir: string): {uri: string, path: string, name: string}[] => {
+    const entries = [{uri: '/dir', path: path.parse(dir).dir, name: '..'}];
     for (const p of fs.readdirSync(dir, {withFileTypes: true}))
-        sb += '<button data-uri="/' +
-        (p.isDirectory() ? 'dir' : 'file') + 
-        '" data-path="' + path.join(p.parentPath, p.name) + '">' + 
-        p.name + '</button><br>';
-    return sb;
+        entries.push({
+            uri: p.isDirectory() ? '/dir' : '/file', 
+            path: path.join(p.parentPath, p.name), 
+            name: p.name
+        });
+    return entries;
 };
 
 const getFile = (path: string): string => fs.readFileSync(path, 'utf-8');

@@ -33,7 +33,7 @@ const elem = id => id in  elems ? elems[id] : elems[id] = document.getElementByI
     if ('file' in storage)
         fetch('/file', {headers: {path: storage.file}})
             .then(r => r.text()).then(t => 
-                handleFile(t, {dataset: {path: storage.file}}));
+                handleFile(t, {path: storage.file}));
     const headers = {};
     if (!storage.id)
         storage.id = String(Date.now() + Math.random());
@@ -43,26 +43,30 @@ const elem = id => id in  elems ? elems[id] : elems[id] = document.getElementByI
     headers.path = storage.dir;
     const r = await fetch('/dir', {headers: headers});
     const t = await r.text();
-    handleDir(t, {dataset: {path: storage.dir}});
+    handleDir(t, {path: storage.dir});
 })();
 
-const handleDir = (t, p, e) => {
-    if (e?.ctrlKey)
-        return open(`${location.origin}${location.pathname}?dir=${p.dataset.path}`, '_blank', 'noopener=true');
-    storage.dir = p.dataset.path;
+const handleDir = (t, e, ev) => {
+    if (ev?.ctrlKey)
+        return open(`${location.origin}${location.pathname}?dir=${e.path}`, '_blank', 'noopener=true');
+    storage.dir = e.path;
     elem('dirName').innerHTML = storage.dir.substring(storage.dir.lastIndexOf('/') + 1);
-    elem('dir').innerHTML = t;
+    elem('dir').innerHTML = ''
+    for (const e of JSON.parse(t)) {
+        const b = document.createElement('button');
+        b.innerHTML = e.name;
+        b.addEventListener('click', ev =>
+            fetch(e.uri, {headers: {path: e.path}})
+                .then(r => r.text()).then(t => 
+                    e.uri === '/dir' ? handleDir(t, e, ev) : handleFile(t, e)));
+        elem('dir').appendChild(b);
+        elem('dir').appendChild(document.createElement('br'));
+    }
     dealWithDots();
-    for (const p of elem('dir').children) 
-        if (p.nodeName === 'BUTTON')
-            p.addEventListener('click', e =>
-                fetch(p.dataset.uri, {headers: {path: p.dataset.path}})
-                    .then(r => r.text()).then(t => 
-                        p.dataset.uri === '/dir' ? handleDir(t, p, e) : handleFile(t, p)));
 }
 
-const handleFile = async (t, p) => {
-    storage.file = p.dataset.path;
+const handleFile = async (t, e) => {
+    storage.file = e.path;
     const extensions = [basicSetup, keymap.of(indentWithTab)]
     const idx = storage.file.lastIndexOf('.');
     const ext = storage.file.slice(idx + 1);
