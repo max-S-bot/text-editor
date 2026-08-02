@@ -10,3 +10,4 @@ using fetch
 - first time using npm to manage JS dependencies (codemirror API)
 - learned how to use esbuild so that I could actually use said frontend dependencies
 - better understanding of HTTP
+- using typescript in a real project (previously used it in leetcode and AOC problems)
