@@ -7,7 +7,7 @@ import { spawn, ChildProcess } from 'child_process';
 const shells: Record<string, ChildProcess> = {};
 
 const getPath = (p: string): string => path.join(import.meta.dirname, '..',
-    p.startsWith('?') || p === '/' ? '/frontend/index.html' : p);
+    p.startsWith('/?') || p === '/' ? '/frontend/index.html' : p);
 
 const handleDir = (path: string, id: string) => {
     if (!(id in shells))
