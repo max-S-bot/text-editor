@@ -19,6 +19,8 @@ https://developer.mozilla.org/en-US/docs/Web/API/Response
 https://developer.mozilla.org/en-US/docs/Web/API/Storage
 https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent
 https://developer.mozilla.org/en-US/docs/Web/API/Window/open
+https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export
 
 https://stackoverflow.com/questions/3705804/css-positioning-elements-next-to-each-other
 https://stackoverflow.com/questions/10075524/sizing-and-positioning-elements-based-on-window-width
@@ -28,6 +30,7 @@ https://stackoverflow.com/questions/2937929/how-to-make-a-div-scrollable-instead
 https://stackoverflow.com/questions/52016966/this-keyword-inside-addeventlistener-callback
 https://stackoverflow.com/questions/3616572/how-to-position-a-div-in-bottom-right-corner-of-a-browser
 https://stackoverflow.com/questions/27458502/how-to-run-interactive-shell-command-inside-node-js?rq=3
+
 
 https://www.reddit.com/r/node/comments/o2zr8m/how_to_retrieve_value_returned_by_a_callback/ 
 https://www.reddit.com/r/Frontend/comments/1d8619e/cant_really_understand_when_to_use_margin_padding/
@@ -40,6 +43,8 @@ https://esbuild.github.io/
 https://codemirror.net/
 
 https://expressjs.com/
+
+https://www.typescriptlang.org/
 
 https://nodejs.org/api/fs.html#class-fsdirent
 https://nodejs.org/api/path.html
