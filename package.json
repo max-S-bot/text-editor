@@ -15,9 +15,8 @@
     "type": "module",
     "scripts": {
         "build": "node ./build.mjs",
-        "electron": "tsc && electron --trace-warnings ./bin/electron.js &",
-        "web": "tsc && node --trace-warnings ./bin/web.js &",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "electron": "electron --trace-warnings ./bin/electron.js &",
+        "web": "node --trace-warnings ./bin/web.js &"
     },
     "devDependencies": {
         "@types/express": "^5.0.6",
