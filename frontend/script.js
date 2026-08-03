@@ -94,15 +94,19 @@ const dealWithDots = () => {
 elem('showDotFiles').addEventListener('input', dealWithDots);
 
 elem('in').addEventListener('keydown', e => {
-    if (e.key === 'ArrowUp' && (termIdx - 1) in term) elem('in').value = term[--termIdx];
-    if (e.key === 'ArrowDown' &&(termIdx + 1) in term) elem('in').value = term[++termIdx];
+    if (e.key === 'ArrowUp' && (termIdx - 1) in term)
+        elem('in').value = term[--termIdx],
+        e.preventDefault(),
+        elem('in').selectionStart = elem('in').textLength;
+    if (e.key === 'ArrowDown' && termIdx in term) 
+        elem('in').value = ++termIdx === term.length ? '' : term[termIdx];
     if (e.key !== 'Enter' || e.shiftKey) return;
     e.preventDefault();
     const com = elem('in').value;
     term.push(com);
     termIdx = term.length;
     storage.term = JSON.stringify(term);
-    elem('out').innerHTML += '$ ' + com + '\n';
+    elem('out').innerHTML += `$ ${com}\n`;
     elem('in').value = '';
     fetch('/term', {
         method: 'POST',
