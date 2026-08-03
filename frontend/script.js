@@ -46,7 +46,7 @@ const elem = id => id in  elems ? elems[id] : elems[id] = document.getElementByI
     handleDir(await ((await fetch('/dir', {headers: headers})).text()), {path: storage.dir});
 })();
 
-const handleDir = (tc, e, ev) => {
+const handleDir = (t, e, ev) => {
     if (ev?.ctrlKey)
         return open(`${location.origin}${location.pathname}?dir=${e.path}`, '_blank', 'noopener=true');
     storage.dir = e.path;
