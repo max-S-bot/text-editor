@@ -46,7 +46,7 @@ const elem = id => id in  elems ? elems[id] : elems[id] = document.getElementByI
     handleDir(await ((await fetch('/dir', {headers: headers})).text()), {path: storage.dir});
 })();
 
-const handleDir = (t, e, ev) => {
+const handleDir = (tc, e, ev) => {
     if (ev?.ctrlKey)
         return open(`${location.origin}${location.pathname}?dir=${e.path}`, '_blank', 'noopener=true');
     storage.dir = e.path;
@@ -94,7 +94,6 @@ const dealWithDots = () => {
 elem('showDotFiles').addEventListener('input', dealWithDots);
 
 elem('in').addEventListener('keydown', e => {
-    console.log(termIdx)
     if (e.key === 'ArrowUp' && (termIdx - 1) in term) elem('in').value = term[--termIdx];
     if (e.key === 'ArrowDown' &&(termIdx + 1) in term) elem('in').value = term[++termIdx];
     if (e.key !== 'Enter' || e.shiftKey) return;
