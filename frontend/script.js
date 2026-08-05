@@ -8,7 +8,6 @@ import { indentUnit } from '@codemirror/language';
 import { languages } from '@codemirror/language-data';
 
 let config;
-let file;
 
 const langs = languages.reduce((ls, l) => {
     for (const e of l.extensions)
@@ -19,17 +18,19 @@ const langs = languages.reduce((ls, l) => {
 const storage = sessionStorage;
 const term = 'term' in storage ? JSON.parse(storage.term) : [];
 let termIdx = term.length;
+let termFocus = false;
 
 const elems = {};
 const elem = id => id in  elems ? elems[id] : elems[id] = document.getElementById(id);
 
+const file = new EditorView({
+    parent: elem('file'),
+    extensions: [basicSetup, keymap.of(indentWithTab)],
+});
+
 (async () => {
-    config = await ((await fetch('/config.json')).json());
+    config = await ((await fetch('/config.json')).text());
     indentUnit.default = ' '.repeat(config.tabSize);
-    file = new EditorView({
-        parent: elem('file'),
-        extensions: [basicSetup, keymap.of(indentWithTab)],
-    });
     const query = location.search.slice(1).split('&')
         .map(e => e.split('=')).reduce((a, c) => (a[c[0]] = c[1], a), {});
     if ('file' in storage)
@@ -43,7 +44,7 @@ const elem = id => id in  elems ? elems[id] : elems[id] = document.getElementByI
     if (!storage.dir)
         storage.dir = 'dir' in query ? query.dir : config.startDir;
     headers.path = storage.dir;
-    handleDir(await ((await fetch('/dir', {headers: headers})).text()), {path: storage.dir});
+    fetch('/dir', {headers: headers}).then(async r => handleDir(await r.text(), {path: storage.dir}))
 })();
 
 const handleDir = (t, e, ev) => {
@@ -93,6 +94,9 @@ const dealWithDots = () => {
 
 elem('showDotFiles').addEventListener('input', dealWithDots);
 
+elem('in').addEventListener('focusin', () => termFocus = true);
+elem('in').addEventListener('focusout', () => termFocus = false);
+
 elem('in').addEventListener('keydown', e => {
     if (e.key === 'ArrowUp' && (termIdx - 1) in term)
         elem('in').value = term[--termIdx],
@@ -120,5 +124,5 @@ elem('in').addEventListener('keydown', e => {
 
 document.addEventListener('keydown', e => {
     if (e.ctrlKey && e.code === 'Backquote')
-        elem('in').focus();
+        termFocus ? file.focus() : elem('in').focus()
 });
