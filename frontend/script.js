@@ -19,17 +19,17 @@ const storage = sessionStorage;
 const term = 'term' in storage ? JSON.parse(storage.term) : [];
 let termIdx = term.length;
 let termFocus = false;
+// let file
 
 const elems = {};
 const elem = id => id in  elems ? elems[id] : elems[id] = document.getElementById(id);
-
 const file = new EditorView({
     parent: elem('file'),
     extensions: [basicSetup, keymap.of(indentWithTab)],
 });
 
 (async () => {
-    config = await ((await fetch('/config.json')).text());
+    config = await ((await fetch('/config.json')).json());
     indentUnit.default = ' '.repeat(config.tabSize);
     const query = location.search.slice(1).split('&')
         .map(e => e.split('=')).reduce((a, c) => (a[c[0]] = c[1], a), {});
