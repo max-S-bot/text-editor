@@ -1,4 +1,5 @@
 #!/bin/bash
 
-tsc 
+npm install
+npx tsc 
 npm run build
