@@ -12,7 +12,7 @@ const getPath = (p: string): string => path.join(import.meta.dirname, '..',
 const handleDir = (path: string, id: string): string => {
     if (!(id in shells))
         shells[id] = spawn('bash');
-    return JSON.stringify(formatDir(path));
+    return JSON.stringify(formatDir(path === '~' ? process.env.HOME! : path));
 };
 
 const formatDir = (dir: string): {uri: string, path: string, name: string}[] => {
@@ -30,7 +30,7 @@ const getFile = (path: string): string => fs.readFileSync(path, 'utf-8');
 
 const postFile = (path: string, body: Uint8Array): '' => (fs.writeFileSync(path, body), '');
 
-const handleTerm = (id: string, body: string): Promise<string> => (shells[id]!.stdin?.write(`${body}\n`),
-	new Promise(r => {shells[id]!.stdout!.on('data', out => r(out)); shells[id]!.stderr!.on('data', out => r(out))}));
+const handleTerm = (id: string, body: string): Promise<string> => (shells[id]?.stdin?.write(`${body}\n`),
+	new Promise(r => {shells[id]?.stdout?.on('data', out => r(out)); shells[id]?.stderr?.on('data', out => r(out))}));
 
 export { getPath, handleDir, getFile, postFile, handleTerm };
