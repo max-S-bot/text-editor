@@ -18,37 +18,29 @@
     "build": "node ./build.mjs",
     "electron": "electron --trace-warnings ./bin/electron.js &",
     "web": "node --trace-warnings ./bin/web.js &",
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make"
+    "app:dir": "electron-builder --dir",
+    "app:dist": "electron-builder"
+  },
+  "build": {
+    "appId": "your.id",
+    "mac": {}
+  
   },
   "devDependencies": {
-    "@electron-forge/cli": "^7.11.2",
-    "@electron-forge/maker-deb": "^7.11.2",
-    "@electron-forge/maker-rpm": "^7.11.2",
-    "@electron-forge/maker-squirrel": "^7.11.2",
-    "@electron-forge/maker-zip": "^7.11.2",
-    "@electron-forge/plugin-auto-unpack-natives": "^7.11.2",
-    "@electron-forge/plugin-fuses": "^7.11.2",
-    "@electron/fuses": "^1.8.0",
     "@types/express": "^5.0.6",
     "@types/node": "^26.1.2",
     "electron": "^43.1.0",
+    "electron-builder": "^26.15.3",
     "esbuild": "0.28.1",
     "typescript": "^7.0.2"
   },
   "allowScripts": {
     "esbuild@0.28.1": true,
-    "electron-winstaller@5.4.4": true
+    "electron-winstaller@5.4.0": true
   },
   "dependencies": {
     "@codemirror/language-data": "^6.5.2",
     "codemirror": "^6.0.2",
-    "electron-squirrel-startup": "^1.0.1",
     "express": "^5.2.1"
-  },
-  "overrides": {
-    "tar": "^7.5.21",
-    "tmp": "^0.2.6"
   }
 }

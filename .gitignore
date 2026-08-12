@@ -1,4 +1,4 @@
 node_modules
 frontend/bundle.js
 bin
-out/
+dist
