@@ -79,11 +79,11 @@ const handleFile = async (t, e) => {
     }));
 };
 
-elem('file').addEventListener('keydown', () => storage.file == null ? null : fetch('/file', {
+elem('file').addEventListener('keydown', () => setTimeout(() => storage.file == null ? null : fetch('/file', {
     method: 'POST',
     headers: {path: storage.file},
     body: file.state.doc.toString(),
-}));
+}), 1));
 
 const dealWithDots = () => {
     const checked = elem('showDotFiles').checked;
