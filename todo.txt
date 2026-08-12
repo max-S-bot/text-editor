@@ -3,5 +3,5 @@ potentially make something like a dropdown for directories
 make tabs within the application to have multiple files open at a time
 possibly use a separate npm repo for the frontend and backend because it's iffy as it is and I think i would have to do so in order to use TS for both.
 poll the filesystem for changes to the currently open directory (maybe go to parent if current directory is deleted? or stay in current directory with one available option (..)?)
-poll filesystem for changes to currently open file (not sure how to handle simultaneous changes in the editor and filesystem. seems like any obvious 'solution' would create a race condition)
+poll filesystem for changes to currently open file (not sure how to handle simultaneous changes in the editor and filesystem. seems like any obvious 'solution' would create a race condition). If every t ms i check for changes on the frontend and if there's a change i push those changes and otherwise i pull from the backend, i think that would work.
 have some sort of error handling for each endpoint (dir, file, and term)
