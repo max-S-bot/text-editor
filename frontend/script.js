@@ -3,7 +3,7 @@
 import { basicSetup } from 'codemirror';
 import { EditorView, keymap } from '@codemirror/view';
 import { indentWithTab } from "@codemirror/commands";
-import { Text, EditorState } from '@codemirror/state'
+import { EditorState } from '@codemirror/state'
 import { indentUnit } from '@codemirror/language';
 import { languages } from '@codemirror/language-data';
 
