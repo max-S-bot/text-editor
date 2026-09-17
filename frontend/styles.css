@@ -1,11 +1,26 @@
-body { overflow: hidden; }
+body { 
+    overflow: hidden;
+    display: flex;
+}
+.gutter {
+    background-color: #eee;
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+.gutter.gutter-horizontal {
+    background-image: url('grips/vertical.png');
+    cursor: col-resize;
+}
+.gutter.gutter-vertical {
+    background-image: url('grips/horizontal.png');
+    cursor: row-resize;
+}
 #left {
-    float: left;
-    display: inline;
-    width: 20%;
+    /* float: left;
+    display: inline; */
+    width: 20%; 
     height: 99vh;
     overflow: none;
-
 }
 #dir {
     height: 90%;
@@ -18,8 +33,9 @@ button {
     border-style: none;
 }
 #right {
-    float: left;
-    display: inline;
+    /* float: left;
+    display: inline; */
+    /* display: flex; */
     width: 79%;
     height: 99vh;
     overflow: hidden;

@@ -6,6 +6,7 @@ import { indentWithTab } from "@codemirror/commands";
 import { EditorState } from '@codemirror/state'
 import { indentUnit } from '@codemirror/language';
 import { languages } from '@codemirror/language-data';
+import Split from 'split.js';
 
 let config;
 
@@ -19,13 +20,20 @@ const storage = sessionStorage;
 const term = 'term' in storage ? JSON.parse(storage.term) : [];
 let termIdx = term.length;
 let termFocus = false;
-// let file
 
 const elems = {};
 const elem = id => id in  elems ? elems[id] : elems[id] = document.getElementById(id);
 const file = new EditorView({
     parent: elem('file'),
     extensions: [basicSetup, keymap.of(indentWithTab)],
+});
+
+Split(['#left', '#right'], {
+    // direction: 'horizontal',
+    // minSize: [],
+});
+Split(['#file', '#term'], {
+    direction: 'vertical',
 });
 
 (async () => {
