@@ -15,13 +15,7 @@ body {
     background-image: url('grips/horizontal.png');
     cursor: row-resize;
 }
-#left {
-    /* float: left;
-    display: inline; */
-    width: 20%; 
-    height: 99vh;
-    overflow: none;
-}
+#left { overflow: none; }
 #dir {
     height: 90%;
     overflow: scroll;
@@ -32,14 +26,7 @@ button {
     min-height: 4vh;
     border-style: none;
 }
-#right {
-    /* float: left;
-    display: inline; */
-    /* display: flex; */
-    width: 79%;
-    height: 99vh;
-    overflow: hidden;
-}
+#right { overflow: hidden; }
 #file {
     width: 98%;
     height: 69vh;
