@@ -42,6 +42,9 @@ https://esbuild.github.io/
 
 https://codemirror.net/
 
+https://github.com/nathancahill/split
+https://github.com/nathancahill/split/tree/master/packages/splitjs#documentation
+
 https://expressjs.com/
 
 https://www.typescriptlang.org/
