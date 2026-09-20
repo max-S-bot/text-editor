@@ -32,10 +32,11 @@ Split(['#left', '#right'], {
     direction: 'horizontal',
     sizes: [20, 80],
     minSize: [innerWidth * .15, innerWidth * .40],
-    // maxSize: [Infinity, Infinity],
 });
 Split(['#file', '#term'], {
     direction: 'vertical',
+    sizes: [70, 30],
+    minSize: [innerHeight * .40, innerHeight * .20],
 });
 
 (async () => {
