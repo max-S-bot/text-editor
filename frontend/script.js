@@ -38,6 +38,13 @@ Split(['#file', '#term'], {
     sizes: [70, 30],
     minSize: [innerHeight * .40, innerHeight * .20],
 });
+Split(['#out', '#in'], {
+    direction: 'vertical',
+    // sizes: [0, '20px'],
+    minSize: [0, 20],
+    maxSize: [Infinity, 20],
+    gutterSize: 0,
+});
 
 (async () => {
     config = await ((await fetch('/config.json')).json());
