@@ -40,7 +40,7 @@ Split(['#file', '#term'], {
 });
 Split(['#out', '#in'], {
     direction: 'vertical',
-    // sizes: [0, '20px'],
+    sizes: [100 - 20 / .3 / innerHeight, 20 / .3 / innerHeight],
     minSize: [0, 20],
     maxSize: [Infinity, 20],
     gutterSize: 0,
